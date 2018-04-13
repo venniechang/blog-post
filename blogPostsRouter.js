@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     res.json(BlogPosts.get());
 });
 
-router.post('/', (req, res) => {
+router.post('/', jsonParser, (req, res) => {
     const requiredFields = ['title', 'content', 'author'];
     for (let i=0; i<requiredFields.length; i++) {
         const field = requiredFields[i];
@@ -24,6 +24,13 @@ router.post('/', (req, res) => {
         req.body.title, req.body.content, req.body.author);
     res.status(200).json(item);
 });
+
+router.delete('/:id', (req, res) => {
+    BlogPosts.delete(req.params.id);
+    console.log(`Deleted blog post for \`${req.params.ID}\``);
+    res.status(204).end();
+});
+
 
 
 module.exports = router;
