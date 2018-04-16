@@ -3,10 +3,6 @@ const morgan = require('morgan');
 const app = express();
 const blogPostsRouter = require('./blogPostsRouter');
 app.use(morgan('common'));
-  
-app.get('/', (req, res) => {
-    res.json('hello');
-})
 
 app.use('./blog-posts', blogPostsRouter);
 
