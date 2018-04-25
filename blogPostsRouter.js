@@ -4,7 +4,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const {BlogPosts} = require('./models');
+const blogPost = require('./models'); //can call it anything
 
 BlogPosts.create('Test 1', 'Author 1', 'Content 1');
 BlogPosts.create('Test 2', 'Author 2', 'Content 2');
