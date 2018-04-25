@@ -65,7 +65,9 @@ router.put('/:id', jsonParser, (req, res) => {
     res.status(204).end();
 })
 
-
+app.use('*', (req, res) => {
+    res.status(404).json({message: 'not found'})
+});
 
 
 module.exports = router;
