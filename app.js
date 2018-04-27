@@ -5,7 +5,13 @@ const app = express();
 app.use(morgan('common'));
 app.use(express.json());
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
 const mongoose = require('mongoose');
+
+const jsonParser = bodyParser.json();
+
 
 mongoose.Promise = global.Promise;
 
@@ -71,10 +77,11 @@ app.get('/posts/:id', (req, res) => {
   });
 });
 
-app.post('/posts', (req, res) => {
+app.post('/posts', jsonParser, (req, res) => {
   const requiredFields = ['content', 'author', 'title'];
-  for(let i = 0; i <= requiredFields.length; i++) {
+  for(let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
+    console.log(field);
     if (!(field in req.body)){
       const message = `Missing \`${field}\` in request body`
       console.error(message);
@@ -85,7 +92,7 @@ app.post('/posts', (req, res) => {
     .create({
       content: req.body.content,
       author: req.body.author,
-      title: req.body.title,
+      title: req.body.title
   })
     .then(post => res.status(201).json(post.serialize()))
     .catch(err => {
@@ -94,7 +101,7 @@ app.post('/posts', (req, res) => {
     });
 });
 
-app.put('/posts/:id', (req, res) => {
+app.put('/posts/:id', jsonParser, (req, res) => {
   if(!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     const message = (`Request path id (${req.params.id}) and request body id ` + `(${req.body.id}) must match`);
     console.error(message);
@@ -102,7 +109,7 @@ app.put('/posts/:id', (req, res) => {
   }
 
   const toUpdate = {};
-  const updatableFields = ['title', 'author', 'content'];
+  const updateableFields = ['title', 'author', 'content'];
 
   updateableFields.forEach(field => {
     if(field in req.body) {
@@ -116,7 +123,7 @@ app.put('/posts/:id', (req, res) => {
   .catch(error => res.status(500).json({message: 'Internal server error'}));
 });
 
-app.delete('/blog-posts/:id', (req, res) =>{
+app.delete('/posts/:id', (req, res) =>{
   blogPost
   .findByIdAndRemove(req.params.id)
   .then(() => {
