@@ -14,7 +14,8 @@
     "mocha": "^5.1.0"
   },
   "scripts": {
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
